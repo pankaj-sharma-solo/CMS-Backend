@@ -1,0 +1,9 @@
+/.gradle/
+/.settings/
+/.project
+/.classpath
+/build/
+/bin/
+/java.io.tmpdir/
+/logs/
+/.idea/
