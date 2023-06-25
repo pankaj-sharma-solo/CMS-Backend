@@ -43,7 +43,7 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public String createToken(String clientId, String apiKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         ApiKeys apiKeysByClientId = apiKeysRepository.getApiKeysByClientId(clientId);
-        if(!apiKeysByClientId.getApiKey().equalsIgnoreCase(apiKey)) {
+        if(apiKeysByClientId == null || !apiKeysByClientId.getApiKey().equalsIgnoreCase(apiKey)) {
             throw BusinessException.builder()
                     .statusCode(HttpStatus.NOT_ACCEPTABLE)
                     .message("Invalid client id or api key.")

@@ -1,6 +1,8 @@
 package com.losung.cms.controller;
 
+import com.losung.cms.exception.BusinessException;
 import com.losung.cms.service.JWTService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ public class JWTController {
     private JWTService jwtService;
 
     @GetMapping("/create")
+    @Operation(description = "Create Authorization token using client_id and api-key.")
     public ResponseEntity<String> createJWT(@RequestParam("client_id") String clientId, @RequestParam("api-key") String apiKey) throws Exception {
         return ResponseEntity.ok(jwtService.createToken(clientId, apiKey));
     }
@@ -26,7 +29,14 @@ public class JWTController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+    public ResponseEntity<BusinessException> handleException(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(BusinessException.builder()
+                        .message(e.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<BusinessException> handleException(BusinessException e) {
+        return ResponseEntity.status(e.getStatusCode()).body(e);
     }
 }

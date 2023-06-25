@@ -26,6 +26,7 @@ public class User {
     @Size(min = 10, max = 10, message = "Please Provide 10 Digit Mobile Number")
     private String phoneNumber;
 
+    @NotEmpty(message = "Email address can not be empty")
     @Pattern(regexp = "^[\\w][\\w-\\.]+@([\\w-]+\\.)+[\\w-]*[\\w]+$", message = "Invalid Email Address Format")
     private String email;
 }
